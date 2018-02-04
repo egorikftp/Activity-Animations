@@ -2,7 +2,7 @@
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
+    android:background="@drawable/bg_activity"
     android:fitsSystemWindows="true">
 
     <TextView
@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
+        android:background="@drawable/bg_round_button_white"
+        android:padding="20dp"
         android:text="Second activity appeared!"
         android:textSize="15sp"
         android:textStyle="bold" />
