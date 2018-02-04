@@ -5,21 +5,23 @@ import android.animation.AnimatorListenerAdapter
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.View.INVISIBLE
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
 import com.egoriku.activityanimations.R
 import com.egoriku.corelib_kt.dsl.afterMeasured
 import com.egoriku.corelib_kt.dsl.fromApi
+import com.egoriku.corelib_kt.dsl.invisible
 import com.egoriku.corelib_kt.dsl.show
 import kotlinx.android.synthetic.main.activity_second.*
 
 
 class SecondActivity : AppCompatActivity() {
 
-    companion object {
+    companion object ExtraConstants {
         const val EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X"
         const val EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y"
+
+        const val ANIMATION_DURATION = 400L
     }
 
     private var revealX: Int = 0
@@ -34,23 +36,23 @@ class SecondActivity : AppCompatActivity() {
                 revealX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X, 0)
                 revealY = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_Y, 0)
 
-                root_layout.afterMeasured {
+                rootLayout.afterMeasured {
                     revealActivity(revealX, revealY)
                 }
             }
         } else {
-            root_layout.show()
+            rootLayout.show()
         }
     }
 
     private fun revealActivity(revealX: Int, revealY: Int) {
-        val finalRadius = (Math.max(root_layout.width, root_layout.height) * 1.1).toFloat()
+        val finalRadius = (Math.max(rootLayout.width, rootLayout.height) * 1.1).toFloat()
 
-        ViewAnimationUtils.createCircularReveal(root_layout, revealX, revealY, 0f, finalRadius).apply {
-            duration = 400
+        ViewAnimationUtils.createCircularReveal(rootLayout, revealX, revealY, 0f, finalRadius).apply {
+            duration = ANIMATION_DURATION
             interpolator = AccelerateInterpolator()
 
-            root_layout.show()
+            rootLayout.show()
             start()
         }
     }
@@ -60,14 +62,14 @@ class SecondActivity : AppCompatActivity() {
     }
 
     private fun unRevealActivity() {
-        val finalRadius = (Math.max(root_layout.width, root_layout.height) * 1.1).toFloat()
+        val finalRadius = (Math.max(rootLayout.width, rootLayout.height) * 1.1).toFloat()
 
-        ViewAnimationUtils.createCircularReveal(root_layout, revealX, revealY, finalRadius, 0f).apply {
-            duration = 400
+        ViewAnimationUtils.createCircularReveal(rootLayout, revealX, revealY, finalRadius, 0f).apply {
+            duration = ANIMATION_DURATION
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) {
-                    root_layout.visibility = INVISIBLE
-                    finishAfterTransition()
+                    rootLayout.invisible()
+                    finish()
                 }
             })
             start()
